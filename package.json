@@ -8,6 +8,10 @@
   },
   "author": "Túlio Ornelas <ornelas.tulio@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tulios/mappersmith-object.git"
+  },
   "scripts": {
     "build": "./node_modules/.bin/browserify index.js -s MappersmithObject --no-builtins -o build/mappersmith-object.js",
     "test-browser": "./node_modules/.bin/karma start karma.conf.js"
