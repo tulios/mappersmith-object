@@ -1,0 +1,38 @@
+{
+  "name": "mappersmith-object",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Túlio Ornelas <ornelas.tulio@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "./node_modules/.bin/browserify index.js -s MappersmithObject --no-builtins -o build/mappersmith-object.js",
+    "test-browser": "./node_modules/.bin/karma start karma.conf.js"
+  },
+  "dependencies": {
+    "mappersmith": "0.8.0"
+  },
+  "devDependencies": {
+    "browserify": "^9.0.8",
+    "mocha": "^2.0.1",
+    "chai": "^1.10.0",
+    "sinon": "^1.12.2",
+    "sinon-chai": "^2.6.0",
+    "karma": "^0.13.2",
+    "karma-mocha": "^0.2.0",
+    "karma-browserify": "^4.2.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-phantomjs2-launcher": "^0.1.6",
+    "karma-sinon": "^1.0.4",
+    "karma-sinon-chai": "^0.3.2",
+    "phantomjs": "^1.9.17",
+    "rewire": "^2.3.0",
+    "rewireify": "0.0.13",
+    "promise": "^7.0.3"
+  }
+}
