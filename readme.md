@@ -19,6 +19,7 @@ var data = {
   }
 }
 
+var MappersmithObject = require('mappersmith-object');
 var obj = MappersmithObject.create(data);
 
 // ATTRIBUTES()
@@ -49,7 +50,9 @@ obj.get('some.new.key.chain') // true
 obj.set('company.name', promiseObj) // Promise (will resolve and set)
 obj.set('company.name', promiseObj).then(function(value) {
   // value => promise value
-  obj.get('company.name') // return == value (the promise is resolved and the value assigned)
+
+  obj.get('company.name')
+  // return == value (the promise is resolved and the value assigned)
 })
 
 // FETCH
@@ -67,7 +70,7 @@ obj.reset({name: 'New', human: false}) // {name: 'New', human: false, ...}
 obj.get('name') // 'New'
 obj.reset() // {...} original object
 
-// Reset returns the reseted attributes
+// Reset returns the original attributes
 obj.reset() // {name: 'Someone', ...}
 obj.attributes() // {name: 'Someone', ...}
 
