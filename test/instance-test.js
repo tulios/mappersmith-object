@@ -52,16 +52,6 @@ describe('Instance', function() {
       expect(instance.get('invalid.long.chain.of.attributes')).to.equal(null);
     });
 
-    [
-      '',
-      0,
-      -0,
-      NaN,
-      null,
-      undefined,
-      false
-    ]
-
     describe('for javascript "falsy" values', function() {
       it('can return empty strings ("")', function() {
         instance.set('test-key', '');
