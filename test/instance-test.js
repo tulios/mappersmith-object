@@ -421,4 +421,16 @@ describe('Instance', function() {
       });
     });
   });
+
+  describe('#toString', function() {
+    it('returns a human readable string', function() {
+      expect(instance.toString()).to.equals('<MappersmithObject.Instance:#' + instance._id + '>');
+    });
+
+    it('returns a different value each object', function() {
+      var another = new Instance();
+      expect(instance.toString()).to.not.equal(another.toString());
+      expect(instance.toString()).to.equal(instance.toString());
+    });
+  });
 });

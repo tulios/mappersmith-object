@@ -2,6 +2,8 @@ var Mappersmith = require('mappersmith');
 var Utils = Mappersmith.Utils;
 var Exceptions = require('./exceptions');
 
+var objectIDCount = 0;
+
 function isThenable(value) {
   return value && typeof value === 'object' && value.then;
 }
@@ -17,6 +19,7 @@ function checkForStrictViolations(obj) {
 }
 
 function Instance(obj, opts) {
+  this._id = ++objectIDCount;
   this._original = obj;
   this._opts = Utils.extend({strict: false}, opts);
   this._attributes = null;
@@ -105,6 +108,10 @@ Instance.prototype = {
     }
 
     return result;
+  },
+
+  toString: function() {
+    return '<MappersmithObject.Instance:#' + this._id + '>';
   }
 }
 
