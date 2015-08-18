@@ -51,6 +51,43 @@ describe('Instance', function() {
     it('returns null for invalid chain', function() {
       expect(instance.get('invalid.long.chain.of.attributes')).to.equal(null);
     });
+
+    [
+      '',
+      0,
+      -0,
+      NaN,
+      null,
+      undefined,
+      false
+    ]
+
+    describe('for javascript "falsy" values', function() {
+      it('can return empty strings ("")', function() {
+        instance.set('test-key', '');
+        expect(instance.get('test-key')).to.equal('');
+      });
+
+      it('can return zero number (0)', function() {
+        instance.set('test-key', 0);
+        expect(instance.get('test-key')).to.equal(0);
+      });
+
+      it('can return negative zero number (-0)', function() {
+        instance.set('test-key', -0);
+        expect(instance.get('test-key')).to.equal(-0);
+      });
+
+      it('can return false', function() {
+        instance.set('test-key', false);
+        expect(instance.get('test-key')).to.equal(false);
+      });
+
+      it('can return NaN', function() {
+        instance.set('test-key', NaN);
+        expect(isNaN(instance.get('test-key'))).to.equal(true);
+      });
+    });
   });
 
   describe('#has', function() {
@@ -68,6 +105,33 @@ describe('Instance', function() {
 
     it('returns false for invalid chains', function() {
       expect(instance.has('some.invalid.chain')).to.equal(false);
+    });
+
+    describe('for javascript "falsy" values', function() {
+      it('returns true for empty strings ("")', function() {
+        instance.set('test-key', '');
+        expect(instance.has('test-key')).to.equal(true);
+      });
+
+      it('returns true for zero number (0)', function() {
+        instance.set('test-key', 0);
+        expect(instance.has('test-key')).to.equal(true);
+      });
+
+      it('returns true for negative zero number (-0)', function() {
+        instance.set('test-key', -0);
+        expect(instance.has('test-key')).to.equal(true);
+      });
+
+      it('returns true for false value', function() {
+        instance.set('test-key', false);
+        expect(instance.has('test-key')).to.equal(true);
+      });
+
+      it('returns true for NaN', function() {
+        instance.set('test-key', NaN);
+        expect(instance.has('test-key')).to.equal(true);
+      });
     });
   });
 

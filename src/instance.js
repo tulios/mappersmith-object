@@ -6,6 +6,10 @@ function isThenable(value) {
   return value && typeof value === 'object' && value.then;
 }
 
+function isDefined(value) {
+  return value !== undefined && value !== null;
+}
+
 function checkForStrictViolations(obj) {
   if (this._opts.strict && obj === undefined) {
     throw new Exceptions.StrictViolationException();
@@ -44,17 +48,19 @@ Instance.prototype = {
     var holder = null;
 
     methods.forEach(function(method) {
-      holder = obj ? obj[method] : null;
+      holder = isDefined(obj) ? obj[method] : null;
       checkForStrictViolations.call(this, holder);
       obj = holder;
     }.bind(this));
 
-    return holder || opts.default;
+    // need to check holder with isDefined because '' (empty string)
+    // is treated as a false object. Ex: '' || null => null
+    return isDefined(holder) ? holder : null || opts.default;
   },
 
   has: function(stringChain) {
     try {
-      return !!this.get(stringChain);
+      return isDefined(this.get(stringChain));
 
     } catch(e) {
       if (e instanceof Exceptions.StrictViolationException) return false;
