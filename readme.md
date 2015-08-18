@@ -77,6 +77,15 @@ var obj = MappersmithObject.create(data, {strict: true});
 obj.fetch('invalid', 'value')
 // throws MappersmithObject.Exceptions.StrictViolationException
 
+// HAS
+obj.has('name') // true
+obj.has('company.floors') // true
+obj.has('invalid') // false
+obj.has('company.invalid.chain') // false
+
+// -- strict: true
+obj.has('invalid') // false (no exception in this case)
+
 // RESET()
 obj.attributes() // {name: 'Someone', ...}
 obj.set('name', 'Name') // 'Name'

@@ -53,6 +53,24 @@ describe('Instance', function() {
     });
   });
 
+  describe('#has', function() {
+    it('works with simple keys', function() {
+      expect(instance.has('name')).to.equal(true);
+    });
+
+    it('works with chains', function() {
+      expect(instance.has('company.floors.first')).to.equal(true);
+    });
+
+    it('returns false for invalid keys', function() {
+      expect(instance.has('invalid')).to.equal(false);
+    });
+
+    it('returns false for invalid chains', function() {
+      expect(instance.has('some.invalid.chain')).to.equal(false);
+    });
+  });
+
   describe('#set', function() {
     it('changes the attribute and returns the value', function() {
       var newName = 'New Name';
@@ -288,6 +306,16 @@ describe('Instance', function() {
           expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
           done();
         }
+      });
+    });
+
+    describe('#has', function() {
+      it('returns false for invalid keys', function() {
+        expect(instance.has(invalidKey)).to.equal(false);
+      });
+
+      it('returns false for invalid chains', function() {
+        expect(instance.has(invalidChain)).to.equal(false);
       });
     });
 

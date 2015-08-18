@@ -52,6 +52,16 @@ Instance.prototype = {
     return holder || opts.default;
   },
 
+  has: function(stringChain) {
+    try {
+      return !!this.get(stringChain);
+
+    } catch(e) {
+      if (e instanceof Exceptions.StrictViolationException) return false;
+      else throw e;
+    }
+  },
+
   set: function(stringChain, value) {
     if (isThenable(value)) {
       return value.
