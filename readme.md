@@ -1,5 +1,7 @@
 # Mappersmith Object
 
+__This is a work in progress__
+
 TODO: write!
 
 ## Examples
