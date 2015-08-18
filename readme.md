@@ -38,6 +38,11 @@ obj.get('wrong') // null
 obj.get('wrong.chain') // null
 obj.get('wrong', {default: 'My Name'}) // 'My Name'
 
+// -- strict: true
+var obj = MappersmithObject.create(data, {strict: true});
+obj.get('invalid')
+// throws MappersmithObject.Exceptions.StrictViolationException
+
 // SET
 obj.set('name', 'Other') // 'Other'
 obj.attributes() // {name: 'Other', ...}
@@ -55,24 +60,33 @@ obj.set('company.name', promiseObj).then(function(value) {
   // return == value (the promise is resolved and the value assigned)
 })
 
+// -- strict: true
+var obj = MappersmithObject.create(data, {strict: true});
+obj.set('invalid', 'value')
+// throws MappersmithObject.Exceptions.StrictViolationException
+
 // FETCH
 obj.fetch('name', 'Default Name') // 'Someone'
 obj.fetch('wrong', 'Default value') // 'Default value'
 obj.fetch('wrong', function() { return 'Default Value'}) // 'Default value'
 
+// -- strict: true
+var obj = MappersmithObject.create(data, {strict: true});
+obj.fetch('invalid', 'value')
+// throws MappersmithObject.Exceptions.StrictViolationException
+
 // RESET()
 obj.attributes() // {name: 'Someone', ...}
 obj.set('name', 'Name') // 'Name'
 obj.attributes() // {name: 'Name', ...}
+// Reset returns the original attributes
+obj.reset() // {name: 'Someone', ...}
+obj.attributes() // {name: 'Someone', ...}
 
 // RESET() with override
 obj.reset({name: 'New', human: false}) // {name: 'New', human: false, ...}
 obj.get('name') // 'New'
 obj.reset() // {...} original object
-
-// Reset returns the original attributes
-obj.reset() // {name: 'Someone', ...}
-obj.attributes() // {name: 'Someone', ...}
 
 // EXTEND()
 obj.extend({

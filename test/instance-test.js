@@ -4,6 +4,7 @@ var Utils = Mappersmith.Utils;
 
 var MappersmithObject = require('../index');
 var Instance = MappersmithObject.Instance;
+var Exceptions = MappersmithObject.Exceptions;
 
 describe('Instance', function() {
   var instance, attributes;
@@ -24,7 +25,7 @@ describe('Instance', function() {
     };
 
     instance = new Instance(attributes);
-  })
+  });
 
   it('can be initialized without arguments', function() {
     expect(new Instance()).to.not.be.null;
@@ -254,6 +255,88 @@ describe('Instance', function() {
 
       expect(typeof instance.anotherMethod).to.equal('function');
       expect(instance.anotherMethod()).to.equal('static');
+    });
+  });
+
+  describe('with "strict: true"', function() {
+    var invalidKey, invalidChain;
+
+    beforeEach(function() {
+      instance = new Instance(attributes, {strict: true});
+      invalidKey = 'invalid';
+      invalidChain = 'company.a.b.c.d';
+    });
+
+    describe('#get', function() {
+      it('throws error for invalid keys (undefined)', function(done) {
+        try {
+          instance.get(invalidKey);
+          done(new Error('it shouldn\'t allow invalid keys in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
+
+      it('throws error for invalid chain (undefined)', function(done) {
+        try {
+          instance.get(invalidChain);
+          done(new Error('it shouldn\'t allow invalid chains in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
+    });
+
+    describe('#set', function() {
+      it('throws error for invalid keys (undefined)', function(done) {
+        try {
+          instance.set(invalidKey, 1);
+          done(new Error('it shouldn\'t allow invalid keys in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
+
+      it('throws error for invalid chain (undefined)', function(done) {
+        try {
+          instance.set(invalidChain, 1);
+          done(new Error('it shouldn\'t allow invalid chain in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
+    });
+
+    describe('#fetch', function() {
+      it('throws error for invalid keys (undefined)', function(done) {
+        try {
+          instance.fetch(invalidKey, 1);
+          done(new Error('it shouldn\'t allow invalid keys in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
+
+      it('throws error for invalid chain (undefined)', function(done) {
+        try {
+          instance.fetch(invalidChain, 1);
+          done(new Error('it shouldn\'t allow invalid keys in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
     });
   });
 });

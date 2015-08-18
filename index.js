@@ -2,7 +2,8 @@ var Instance = require('./src/instance');
 
 module.exports = {
   Instance: Instance,
-  create: function(attrs) {
-    return new Instance(attrs);
+  Exceptions: require('./src/exceptions'),
+  create: function(attrs, opts) {
+    return new Instance(attrs, opts);
   }
 };

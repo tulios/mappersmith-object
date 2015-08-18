@@ -1,12 +1,20 @@
 var Mappersmith = require('mappersmith');
 var Utils = Mappersmith.Utils;
+var Exceptions = require('./exceptions');
 
 function isThenable(value) {
   return value && typeof value === 'object' && value.then;
 }
 
-var Instance = function(obj) {
+function checkForStrictViolations(obj) {
+  if (this._opts.strict && obj === undefined) {
+    throw new Exceptions.StrictViolationException();
+  }
+}
+
+function Instance(obj, opts) {
   this._original = obj;
+  this._opts = Utils.extend({strict: false}, opts);
   this._attributes = null;
   this.reset();
 }
@@ -37,6 +45,7 @@ Instance.prototype = {
 
     methods.forEach(function(method) {
       holder = obj ? obj[method] : null;
+      checkForStrictViolations.call(this, holder);
       obj = holder;
     }.bind(this));
 
@@ -50,19 +59,24 @@ Instance.prototype = {
         bind(this));
     }
 
+    var isStrict = this._opts.strict;
     var methods = stringChain.split(/\./);
     var obj = this._attributes;
     var last = methods.length - 1;
 
     methods.forEach(function(method, i) {
       if (i !== last) {
-        if (!obj[method]) obj[method] = {}
+        if (!obj[method]) {
+          checkForStrictViolations.call(this, obj[method]);
+          obj[method] = {}
+        }
         obj = obj[method];
 
       } else {
+        checkForStrictViolations.call(this, obj[method]);
         obj[method] = value;
       }
-    });
+    }.bind(this));
 
     return value;
   },
