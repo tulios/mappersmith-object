@@ -151,6 +151,13 @@ Instance.prototype = {
     return false
   },
 
+  toArray: function(stringChain) {
+    var value = this.get(stringChain);
+    if (!isDefined(value)) return [];
+    var objToString = Object.prototype.toString.call(value);
+    return objToString === '[object Array]' ? value : [value];
+  },
+
   toString: function() {
     return '<MappersmithObject.Instance:#' + this._id + '>';
   }

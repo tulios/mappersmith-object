@@ -133,4 +133,11 @@ obj.toggle('name') // false
 
 // isBlank
 // isPresent
+
+// toArray
+
+obj.toArray('name') // ['Someone']
+obj.toArray('age') // [27]
+obj.toArray('invalid') // []
+obj.toArray('company.sectors') // ["1A", "2B"]
 ```

@@ -467,6 +467,25 @@ describe('Instance', function() {
     });
   });
 
+  describe('#toArray', function() {
+    it('returns the value wrapped', function() {
+      expect(instance.toArray('name')).to.deep.equal([instance.get('name')]);
+      expect(instance.toArray('age')).to.deep.equal([instance.get('age')]);
+      expect(instance.toArray('human')).to.deep.equal([instance.get('human')]);
+      expect(instance.toArray('clicks')).to.deep.equal([instance.get('clicks')]);
+      expect(instance.toArray('company')).to.deep.equal([instance.get('company')]);
+      expect(instance.toArray('company.name')).to.deep.equal([instance.get('company.name')]);
+    });
+
+    it('returns the value if it is an array', function() {
+      expect(instance.toArray('company.sectors')).to.deep.equal(instance.get('company.sectors'));
+    });
+
+    it('returns an empty array for undefined values', function() {
+      expect(instance.toArray('invalid')).to.deep.equal([]);
+    });
+  });
+
   describe('#attributes', function() {
     it('copies the initial attributes', function() {
       expect(instance.attributes()).to.deep.equal(attributes);
@@ -699,6 +718,19 @@ describe('Instance', function() {
       it('throws error for invalid keys (undefined)', function(done) {
         try {
           instance.dec(invalidKey);
+          done(new Error('it shouldn\'t allow invalid keys in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
+    });
+
+    describe('#toArray', function() {
+      it('throws error for invalid keys (undefined)', function(done) {
+        try {
+          instance.toArray(invalidKey);
           done(new Error('it shouldn\'t allow invalid keys in strict mode'));
 
         } catch(e) {
