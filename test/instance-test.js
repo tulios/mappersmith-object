@@ -14,6 +14,7 @@ describe('Instance', function() {
       name: "Someone",
       age: 27,
       human: true,
+      clicks: 3,
       company: {
         name: "SomethingCool.io",
         sectors: ["1A", "2B"],
@@ -76,51 +77,6 @@ describe('Instance', function() {
       it('can return NaN', function() {
         instance.set('test-key', NaN);
         expect(isNaN(instance.get('test-key'))).to.equal(true);
-      });
-    });
-  });
-
-  describe('#has', function() {
-    it('works with simple keys', function() {
-      expect(instance.has('name')).to.equal(true);
-    });
-
-    it('works with chains', function() {
-      expect(instance.has('company.floors.first')).to.equal(true);
-    });
-
-    it('returns false for invalid keys', function() {
-      expect(instance.has('invalid')).to.equal(false);
-    });
-
-    it('returns false for invalid chains', function() {
-      expect(instance.has('some.invalid.chain')).to.equal(false);
-    });
-
-    describe('for javascript "falsy" values', function() {
-      it('returns true for empty strings ("")', function() {
-        instance.set('test-key', '');
-        expect(instance.has('test-key')).to.equal(true);
-      });
-
-      it('returns true for zero number (0)', function() {
-        instance.set('test-key', 0);
-        expect(instance.has('test-key')).to.equal(true);
-      });
-
-      it('returns true for negative zero number (-0)', function() {
-        instance.set('test-key', -0);
-        expect(instance.has('test-key')).to.equal(true);
-      });
-
-      it('returns true for false value', function() {
-        instance.set('test-key', false);
-        expect(instance.has('test-key')).to.equal(true);
-      });
-
-      it('returns true for NaN', function() {
-        instance.set('test-key', NaN);
-        expect(instance.has('test-key')).to.equal(true);
       });
     });
   });
@@ -214,6 +170,129 @@ describe('Instance', function() {
     describe('chain with value', function() {
       it('returns value', function() {
         expect(instance.fetch('name', 'other value')).to.equal(instance.get('name'));
+      });
+    });
+  });
+
+  describe('#has', function() {
+    it('works with simple keys', function() {
+      expect(instance.has('name')).to.equal(true);
+    });
+
+    it('works with chains', function() {
+      expect(instance.has('company.floors.first')).to.equal(true);
+    });
+
+    it('returns false for invalid keys', function() {
+      expect(instance.has('invalid')).to.equal(false);
+    });
+
+    it('returns false for invalid chains', function() {
+      expect(instance.has('some.invalid.chain')).to.equal(false);
+    });
+
+    describe('for javascript "falsy" values', function() {
+      it('returns true for empty strings ("")', function() {
+        instance.set('test-key', '');
+        expect(instance.has('test-key')).to.equal(true);
+      });
+
+      it('returns true for zero number (0)', function() {
+        instance.set('test-key', 0);
+        expect(instance.has('test-key')).to.equal(true);
+      });
+
+      it('returns true for negative zero number (-0)', function() {
+        instance.set('test-key', -0);
+        expect(instance.has('test-key')).to.equal(true);
+      });
+
+      it('returns true for false value', function() {
+        instance.set('test-key', false);
+        expect(instance.has('test-key')).to.equal(true);
+      });
+
+      it('returns true for NaN', function() {
+        instance.set('test-key', NaN);
+        expect(instance.has('test-key')).to.equal(true);
+      });
+    });
+  });
+
+  describe('#inc', function() {
+    describe('for undefined keys', function() {
+      it('initializes with 1 and returns the value', function() {
+        expect(instance.inc('count')).to.equal(1);
+        expect(instance.get('count')).to.equal(1);
+      });
+    });
+
+    describe('for number values', function() {
+      it('increments 1 by default and returns the new value', function() {
+        var oldValue = instance.get('clicks');
+        expect(instance.inc('clicks')).to.equal(oldValue + 1);
+        expect(instance.get('clicks')).to.equal(oldValue + 1);
+      });
+
+      describe('with a second argument', function() {
+        it('increments the provided number and returns the new value', function() {
+          var oldValue = instance.get('clicks');
+          expect(instance.inc('clicks', 3)).to.equal(oldValue + 3);
+          expect(instance.get('clicks')).to.equal(oldValue + 3);
+        });
+      });
+
+      describe('with negative numbers', function() {
+        it('decreases the value', function() {
+          var oldValue = instance.get('clicks');
+          expect(instance.inc('clicks', -1)).to.equal(oldValue - 1);
+          expect(instance.get('clicks')).to.equal(oldValue - 1);
+        });
+      });
+    });
+
+    describe('for other types', function() {
+      it('returns false and doens\'t touch the value', function() {
+        expect(instance.inc('name')).to.equal(false);
+      });
+    });
+  });
+
+  describe('#dec', function() {
+    describe('for undefined keys', function() {
+      it('initializes with -1 and returns the value', function() {
+        expect(instance.dec('count')).to.equal(-1);
+        expect(instance.get('count')).to.equal(-1);
+      });
+    });
+
+    describe('for number values', function() {
+      it('decrements 1 by default and returns the new value', function() {
+        var oldValue = instance.get('clicks');
+        expect(instance.dec('clicks')).to.equal(oldValue - 1);
+        expect(instance.get('clicks')).to.equal(oldValue - 1);
+      });
+
+      describe('with a second argument', function() {
+        it('decrements the provided number and returns the new value', function() {
+          var oldValue = instance.get('clicks');
+          expect(instance.dec('clicks', 3)).to.equal(oldValue - 3);
+          expect(instance.get('clicks')).to.equal(oldValue - 3);
+        });
+      });
+
+      describe('with positive numbers', function() {
+        it('still decreases the value', function() {
+          var oldValue = instance.get('clicks');
+          expect(instance.dec('clicks', 1)).to.equal(oldValue - 1);
+          expect(instance.get('clicks')).to.equal(oldValue - 1);
+        });
+      });
+    });
+
+    describe('for other types', function() {
+      it('returns false and doens\'t touch the value', function() {
+        expect(instance.inc('name')).to.equal(false);
       });
     });
   });
@@ -363,16 +442,6 @@ describe('Instance', function() {
       });
     });
 
-    describe('#has', function() {
-      it('returns false for invalid keys', function() {
-        expect(instance.has(invalidKey)).to.equal(false);
-      });
-
-      it('returns false for invalid chains', function() {
-        expect(instance.has(invalidChain)).to.equal(false);
-      });
-    });
-
     describe('#set', function() {
       it('throws error for invalid keys (undefined)', function(done) {
         try {
@@ -412,6 +481,42 @@ describe('Instance', function() {
       it('throws error for invalid chain (undefined)', function(done) {
         try {
           instance.fetch(invalidChain, 1);
+          done(new Error('it shouldn\'t allow invalid keys in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
+    });
+
+    describe('#has', function() {
+      it('returns false for invalid keys', function() {
+        expect(instance.has(invalidKey)).to.equal(false);
+      });
+
+      it('returns false for invalid chains', function() {
+        expect(instance.has(invalidChain)).to.equal(false);
+      });
+    });
+
+    describe('#inc', function() {
+      it('throws error for invalid keys (undefined)', function(done) {
+        try {
+          instance.inc(invalidKey);
+          done(new Error('it shouldn\'t allow invalid keys in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
+    });
+
+    describe('#dec', function() {
+      it('throws error for invalid keys (undefined)', function(done) {
+        try {
+          instance.dec(invalidKey);
           done(new Error('it shouldn\'t allow invalid keys in strict mode'));
 
         } catch(e) {

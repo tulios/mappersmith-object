@@ -1,6 +1,7 @@
 var Mappersmith = require('mappersmith');
 var Utils = Mappersmith.Utils;
 var Exceptions = require('./exceptions');
+var isNumber = require('./number').isInteger;
 
 var objectIDCount = 0;
 
@@ -61,16 +62,6 @@ Instance.prototype = {
     return isDefined(holder) ? holder : null || opts.default;
   },
 
-  has: function(stringChain) {
-    try {
-      return isDefined(this.get(stringChain));
-
-    } catch(e) {
-      if (e instanceof Exceptions.StrictViolationException) return false;
-      else throw e;
-    }
-  },
-
   set: function(stringChain, value) {
     if (isThenable(value)) {
       return value.
@@ -108,6 +99,30 @@ Instance.prototype = {
     }
 
     return result;
+  },
+
+  has: function(stringChain) {
+    try {
+      return isDefined(this.get(stringChain));
+
+    } catch(e) {
+      if (e instanceof Exceptions.StrictViolationException) return false;
+      else throw e;
+    }
+  },
+
+  inc: function(stringChain, factor) {
+    factor = factor || 1;
+    var current = this.get(stringChain);
+    if (isDefined(current)) {
+      if (isNumber(current)) return this.set(stringChain, current + factor);
+      return false;
+    }
+    return this.set(stringChain, factor);
+  },
+
+  dec: function(stringChain, factor) {
+    return this.inc(stringChain, -1 * (factor || 1))
   },
 
   toString: function() {

@@ -11,6 +11,7 @@ var data = {
   name: "Someone",
   age: 27,
   human: true,
+  clicks: 3,
   company: {
     name: "SomethingCool.io",
     sectors: ["1A", "2B"],
@@ -111,4 +112,15 @@ obj.extend({
 
 obj.greetings() // 'Hello Someone'
 obj.sectorCountPlus(3) // 2 + 3 = 5
+
+// INC and DEC
+obj.inc('clicks') // 4
+obj.inc('clicks', 2) // 6
+obj.dec('clicks') // 5
+obj.dec('clicks', 3) // 2
+
+obj.inc('invalid') // 1
+obj.dec('invalid') // -1
+obj.inc('name') // false
+obj.dec('name') // false
 ```
