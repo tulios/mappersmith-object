@@ -252,7 +252,7 @@ describe('Instance', function() {
     });
 
     describe('for other types', function() {
-      it('returns false and doens\'t touch the value', function() {
+      it('returns false and doesn\'t touch the value', function() {
         expect(instance.inc('name')).to.equal(false);
       });
     });
@@ -291,8 +291,35 @@ describe('Instance', function() {
     });
 
     describe('for other types', function() {
-      it('returns false and doens\'t touch the value', function() {
+      it('returns false and doesn\'t touch the value', function() {
         expect(instance.inc('name')).to.equal(false);
+      });
+    });
+  });
+
+  describe('#toggle', function() {
+    describe('for undefined keys', function() {
+      it('initializes with true and returns the value', function() {
+        expect(instance.toggle('invalid')).to.equal(true);
+        expect(instance.get('invalid')).to.equal(true);
+      });
+    });
+
+    describe('for boolean keys', function() {
+      it('flips the value', function() {
+        var oldValue = instance.get('human');
+        expect(instance.toggle('human')).to.equal(!oldValue);
+        expect(instance.get('human')).to.equal(!oldValue);
+        expect(instance.toggle('human')).to.equal(oldValue);
+        expect(instance.get('human')).to.equal(oldValue);
+      });
+    });
+
+    describe('for other types', function() {
+      it('always returns false and doesn\'t touch the value', function() {
+        expect(instance.toggle('name')).to.equal(false);
+        expect(instance.toggle('name')).to.equal(false);
+        expect(instance.toggle('name')).to.equal(false);
       });
     });
   });
@@ -517,6 +544,19 @@ describe('Instance', function() {
       it('throws error for invalid keys (undefined)', function(done) {
         try {
           instance.dec(invalidKey);
+          done(new Error('it shouldn\'t allow invalid keys in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
+    });
+
+    describe('#toggle', function() {
+      it('throws error for invalid keys (undefined)', function(done) {
+        try {
+          instance.toggle(invalidKey);
           done(new Error('it shouldn\'t allow invalid keys in strict mode'));
 
         } catch(e) {

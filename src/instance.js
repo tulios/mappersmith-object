@@ -125,6 +125,13 @@ Instance.prototype = {
     return this.inc(stringChain, -1 * (factor || 1))
   },
 
+  toggle: function(stringChain) {
+    var value = this.get(stringChain);
+    if (!isDefined(value)) return this.set(stringChain, true);
+    if (typeof value === 'boolean') return this.set(stringChain, !value);
+    return false
+  },
+
   toString: function() {
     return '<MappersmithObject.Instance:#' + this._id + '>';
   }

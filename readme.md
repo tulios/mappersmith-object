@@ -123,4 +123,11 @@ obj.inc('invalid') // 1
 obj.dec('invalid') // -1
 obj.inc('name') // false
 obj.dec('name') // false
+
+// TOGGLE
+obj.toggle('human') // false
+obj.toggle('human') // true
+obj.toggle('invalid') // true
+obj.toggle('name') // false
+obj.toggle('name') // false
 ```
