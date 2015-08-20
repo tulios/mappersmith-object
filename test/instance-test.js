@@ -219,6 +219,149 @@ describe('Instance', function() {
     });
   });
 
+  describe('#isBlank', function() {
+    var keyName;
+
+    beforeEach(function() {
+      keyName = 'blank-key';
+    });
+
+    it('returns true for ""', function() {
+      instance.set(keyName, '');
+      expect(instance.isBlank(keyName)).to.equal(true);
+    });
+
+    it('returns true for "false"', function() {
+      instance.set(keyName, false);
+      expect(instance.isBlank(keyName)).to.equal(true);
+    });
+
+    it('returns true for "null"', function() {
+      instance.set(keyName, null);
+      expect(instance.isBlank(keyName)).to.equal(true);
+    });
+
+    it('returns true for "undefined"', function() {
+      instance.set(keyName, undefined);
+      expect(instance.isBlank(keyName)).to.equal(true);
+    });
+
+    it('returns true for "[]"', function() {
+      instance.set(keyName, []);
+      expect(instance.isBlank(keyName)).to.equal(true);
+    });
+
+    it('returns true for NaN', function() {
+      instance.set(keyName, NaN);
+      expect(instance.isBlank(keyName)).to.equal(true);
+    });
+
+    it('returns false for arrays with elements', function() {
+      instance.set(keyName, [1, 2, 3]);
+      expect(instance.isBlank(keyName)).to.equal(false);
+    });
+
+    it('returns false for true', function() {
+      instance.set(keyName, true);
+      expect(instance.isBlank(keyName)).to.equal(false);
+    });
+
+    it('returns false for numbers', function() {
+      instance.set(keyName, 1);
+      expect(instance.isBlank(keyName)).to.equal(false);
+      instance.set(keyName, 0);
+      expect(instance.isBlank(keyName)).to.equal(false);
+      instance.set(keyName, -1);
+      expect(instance.isBlank(keyName)).to.equal(false);
+      instance.set(keyName, -0);
+      expect(instance.isBlank(keyName)).to.equal(false);
+    });
+
+    it('returns false for objects', function() {
+      instance.set(keyName, {a: 1});
+      expect(instance.isBlank(keyName)).to.equal(false);
+    });
+
+    it('returns false for strings with value', function() {
+      instance.set(keyName, 'string');
+      expect(instance.isBlank(keyName)).to.equal(false);
+    });
+
+    it('returns false for functions', function() {
+      instance.set(keyName, function(){});
+      expect(instance.isBlank(keyName)).to.equal(false);
+    });
+  });
+
+  describe('#isPresent', function() {
+    var keyName;
+
+    beforeEach(function() {
+      keyName = 'present-key';
+    });
+
+    it('returns false for ""', function() {
+      instance.set(keyName, '');
+      expect(instance.isPresent(keyName)).to.equal(false);
+    });
+
+    it('returns false for "false"', function() {
+      instance.set(keyName, false);
+      expect(instance.isPresent(keyName)).to.equal(false);
+    });
+
+    it('returns false for "null"', function() {
+      instance.set(keyName, null);
+      expect(instance.isPresent(keyName)).to.equal(false);
+    });
+
+    it('returns false for "undefined"', function() {
+      instance.set(keyName, undefined);
+      expect(instance.isPresent(keyName)).to.equal(false);
+    });
+
+    it('returns false for "[]"', function() {
+      instance.set(keyName, []);
+      expect(instance.isPresent(keyName)).to.equal(false);
+    });
+
+    it('returns true for arrays with elements', function() {
+      instance.set(keyName, [1, 2, 3]);
+      expect(instance.isPresent(keyName)).to.equal(true);
+    });
+
+    it('returns true for true', function() {
+      instance.set(keyName, true);
+      expect(instance.isPresent(keyName)).to.equal(true);
+    });
+
+    it('returns true for numbers', function() {
+      instance.set(keyName, 1);
+      expect(instance.isPresent(keyName)).to.equal(true);
+      instance.set(keyName, 0);
+      expect(instance.isPresent(keyName)).to.equal(true);
+      instance.set(keyName, -1);
+      expect(instance.isPresent(keyName)).to.equal(true);
+      instance.set(keyName, -0);
+      expect(instance.isPresent(keyName)).to.equal(true);
+    });
+
+    it('returns true for objects', function() {
+      instance.set(keyName, {a: 1});
+      expect(instance.isPresent(keyName)).to.equal(true);
+    });
+
+    it('returns true for strings with value', function() {
+      instance.set(keyName, 'string');
+      expect(instance.isPresent(keyName)).to.equal(true);
+    });
+
+    it('returns true for functions', function() {
+      instance.set(keyName, function(){});
+      expect(instance.isPresent(keyName)).to.equal(true);
+    });
+  });
+
   describe('#inc', function() {
     describe('for undefined keys', function() {
       it('initializes with 1 and returns the value', function() {
@@ -524,6 +667,18 @@ describe('Instance', function() {
 
       it('returns false for invalid chains', function() {
         expect(instance.has(invalidChain)).to.equal(false);
+      });
+    });
+
+    describe('#isBlank', function() {
+      it('returns true for invalid keys', function() {
+        expect(instance.isBlank(invalidKey)).to.equal(true);
+      });
+    });
+
+    describe('#isPresent', function() {
+      it('returns false for invalid keys', function() {
+        expect(instance.isPresent(invalidKey)).to.equal(false);
       });
     });
 

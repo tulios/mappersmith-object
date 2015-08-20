@@ -111,6 +111,25 @@ Instance.prototype = {
     }
   },
 
+  isBlank: function(stringChain) {
+    try {
+      var value = this.get(stringChain);
+      var objToString = Object.prototype.toString.call(value);
+      return value === false ||
+             !isDefined(value) ||
+             (objToString === '[object Array]' && value.length === 0) ||
+             (objToString === '[object String]' && value.length === 0) ||
+             (objToString === '[object Number]' && isNaN(value));
+    } catch(e) {
+      if (e instanceof Exceptions.StrictViolationException) return true;
+      else throw e;
+    }
+  },
+
+  isPresent: function(stringChain) {
+    return !this.isBlank(stringChain);
+  },
+
   inc: function(stringChain, factor) {
     factor = factor || 1;
     var current = this.get(stringChain);

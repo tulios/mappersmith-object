@@ -130,4 +130,7 @@ obj.toggle('human') // true
 obj.toggle('invalid') // true
 obj.toggle('name') // false
 obj.toggle('name') // false
+
+// isBlank
+// isPresent
 ```
