@@ -252,6 +252,7 @@ npm test
 ## Compile and release
 
 Compile: `npm run build`
+
 Release (minified version): `npm run release`
 
 ## License
