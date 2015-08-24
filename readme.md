@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/tulios/mappersmith-object.svg?branch=master)](https://travis-ci.org/tulios/mappersmith-object)
 # Mappersmith Object
 
 __This is a work in progress__
