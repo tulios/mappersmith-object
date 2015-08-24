@@ -1,3 +1,7 @@
+/*!
+ * MappersmithObject __VERSION__
+ * https://github.com/tulios/mappersmith-object
+ */
 var Instance = require('./src/instance');
 
 module.exports = {

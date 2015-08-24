@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "Túlio Ornelas <ornelas.tulio@gmail.com>",
   "license": "MIT",
   "repository": {
@@ -13,14 +10,24 @@
     "url": "https://github.com/tulios/mappersmith-object.git"
   },
   "scripts": {
-    "build": "./node_modules/.bin/browserify index.js -s MappersmithObject --no-builtins -o build/mappersmith-object.js",
-    "test-browser": "./node_modules/.bin/karma start karma.conf.js"
+    "build": "./node_modules/.bin/browserify index.js -x mappersmith -s MappersmithObject -t browserify-versionify --no-builtins -o build/mappersmith-object.js",
+    "release": "npm run build && ./node_modules/.bin/uglifyjs build/mappersmith-object.js -o build/mappersmith-object.min.js -c --screw-ie8 --comments /^\\s*/*!/",
+    "test-browser": "./node_modules/.bin/karma start karma.conf.js",
+    "test": "SINGLE_RUN=true npm run test-browser"
   },
   "dependencies": {
-    "mappersmith": "0.8.0"
+    "mappersmith": ">= 0.8.0",
+    "browserify-shim": "^3.8.2"
+  },
+  "browserify": {
+    "transform": [ "browserify-shim" ]
+  },
+  "browserify-shim": {
+    "mappersmith": "global:Mappersmith"
   },
   "devDependencies": {
     "browserify": "^9.0.8",
+    "browserify-versionify": "^1.0.4",
     "mocha": "^2.0.1",
     "chai": "^1.10.0",
     "sinon": "^1.12.2",
@@ -37,6 +44,7 @@
     "phantomjs": "^1.9.17",
     "rewire": "^2.3.0",
     "rewireify": "0.0.13",
-    "promise": "^7.0.3"
+    "promise": "^7.0.3",
+    "uglify-js": "^2.4.20"
   }
 }
