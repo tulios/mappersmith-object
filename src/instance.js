@@ -59,7 +59,7 @@ Instance.prototype = {
 
     // need to check holder with isDefined because '' (empty string)
     // is treated as a false object. Ex: '' || null => null
-    return isDefined(holder) ? holder : null || opts.default;
+    return isDefined(holder) ? holder : opts.default || null;
   },
 
   set: function(stringChain, value) {
@@ -69,7 +69,6 @@ Instance.prototype = {
         bind(this));
     }
 
-    var isStrict = this._opts.strict;
     var methods = stringChain.split(/\./);
     var obj = this._attributes;
     var last = methods.length - 1;
