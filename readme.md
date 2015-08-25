@@ -73,6 +73,8 @@ __Table of Contents:__
 
 ### <a name="create"></a> create
 
+This method is used to wrap your objects. With `strict: true` operations with undefined attributes will raise an exception.
+
 ```js
 var obj = MappersmithObject.create(data);
 // or
@@ -81,8 +83,15 @@ var obj = MappersmithObject.create(data, {strict: true});
 
 ### <a name="attributes"></a> attributes
 
+It returns a plain javascript object with your attributes.
+
 ```js
 obj.attributes() // {name: 'Someone', ...}
+```
+
+It accepts a list o keys to filter the result.
+
+```js
 obj.attributes('name') // {name: 'Someone'}
 obj.attributes('name', 'human') // {name: 'Someone', human: true}
 
@@ -90,7 +99,11 @@ obj.attributes('wrong.key', 'company.name')
 // {wrong: {key: null}, company: {name: 'SomethingCool.io'}}
 ```
 
+It will raise exception for invalid keys in strict mode.
+
 ### <a name="get"></a> get
+
+It retrieves the value of a property from the object. It accepts chain calls.
 
 ```js
 obj.get('name') // 'Someone'
@@ -98,10 +111,15 @@ obj.get('company.name') // SomethingCool.io
 obj.get('company.floors.first') // A
 obj.get('wrong') // null
 obj.get('wrong.chain') // null
+```
+
+It's possible to assign a `default` value.
+
+```js
 obj.get('wrong', {default: 'My Name'}) // 'My Name'
 ```
 
-with `{strict: true}`:
+It will raise exception for invalid keys in strict mode.
 
 ```js
 obj.get('invalid')
@@ -110,25 +128,35 @@ obj.get('invalid')
 
 ### <a name="set"></a> set
 
+It sets the provided value to the key, creating inexistent nodes in the process.
+
 ```js
 obj.set('name', 'Other') // 'Other'
-obj.attributes() // {name: 'Other', ...}
 obj.set('company.name', 'Name') // 'Name'
+obj.attributes() // {name: 'Other', company: {name: 'Name', ...}, ...}
+```
 
+With inexistent keys/chains:
+
+```js
 obj.set('some.new.key.chain', true) // true
 obj.get('some.new.key') // {chain: true}
 obj.get('some.new.key.chain') // true
+```
 
+If the value assigned is a promise it will be resolved and the value set. A promise will be returned instead of the value.
+
+```js
 obj.set('company.name', promiseObj) // Promise (will resolve and set)
 obj.set('company.name', promiseObj).then(function(value) {
-  // value => promise value
+  console.log(value) // value => promise value
 
   obj.get('company.name')
   // return == value (the promise is resolved and the value assigned)
 })
 ```
 
-with `{strict: true}`:
+It will raise exception for invalid keys in strict mode.
 
 ```js
 obj.set('invalid', 'value')
@@ -137,13 +165,17 @@ obj.set('invalid', 'value')
 
 ### <a name="fetch"></a> fetch
 
+It fetches data from the object, using the given key. If there is data in the object with the given key, then that data is returned. If there is no such data in the object, then the second argument value will be set and returned.
+
+The second argument can be a value or a function. The function will be executed to generate the value.
+
 ```js
 obj.fetch('name', 'Default Name') // 'Someone'
 obj.fetch('wrong', 'Default value') // 'Default value'
 obj.fetch('wrong', function() { return 'Default Value'}) // 'Default value'
 ```
 
-with `{strict: true}`:
+It will raise exception for invalid keys in strict mode.
 
 ```js
 obj.fetch('invalid', 'value')
@@ -151,6 +183,8 @@ obj.fetch('invalid', 'value')
 ```
 
 ### <a name="has"></a> has
+
+It checks if a property exists. It won't raise any exception for invalid keys, even in strict mode.
 
 ```js
 obj.has('name') // true
@@ -167,6 +201,8 @@ obj.has('invalid') // false (no exception in this case)
 
 ### <a name="inc"></a> inc
 
+It set the value of a property to the current value plus some amount. The default amount is 1. If the value is not a number `false` will be returned instead. Undefined keys will be initialized with 1.
+
 ```js
 obj.inc('clicks') // 4
 obj.inc('clicks', 2) // 6
@@ -174,7 +210,11 @@ obj.inc('invalid') // 1
 obj.inc('name') // false
 ```
 
+It will raise exception for invalid keys in strict mode.
+
 ### <a name="dec"></a> dec
+
+It set the value of a property to the current value minus some amount. The default amount is 1. If the value is not a number `false` will be returned instead. Undefined keys will be initialized with -1.
 
 ```js
 obj.dec('clicks') // 5
@@ -182,6 +222,8 @@ obj.dec('clicks', 3) // 2
 obj.dec('invalid') // -1
 obj.dec('name') // false
 ```
+
+It will raise exception for invalid keys in strict mode.
 
 ### <a name="toggle"></a> toggle
 

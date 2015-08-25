@@ -607,6 +607,19 @@ describe('Instance', function() {
       invalidChain = 'company.a.b.c.d';
     });
 
+    describe('#attributes', function() {
+      it('throws error for invalid keys', function(done) {
+        try {
+          instance.attributes(invalidKey);
+          done(new Error('it shouldn\'t allow invalid keys in strict mode'));
+
+        } catch(e) {
+          expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
+          done();
+        }
+      });
+    });
+
     describe('#get', function() {
       it('throws error for invalid keys (undefined)', function(done) {
         try {
