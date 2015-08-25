@@ -231,6 +231,16 @@ describe('Instance', function() {
       expect(instance.isBlank(keyName)).to.equal(true);
     });
 
+    it('returns true for " "', function() {
+      instance.set(keyName, ' ');
+      expect(instance.isBlank(keyName)).to.equal(true);
+    });
+
+    it('returns true for {}', function() {
+      instance.set(keyName, {});
+      expect(instance.isBlank(keyName)).to.equal(true);
+    });
+
     it('returns true for "false"', function() {
       instance.set(keyName, false);
       expect(instance.isBlank(keyName)).to.equal(true);
