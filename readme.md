@@ -69,6 +69,7 @@ __Table of Contents:__
 - [isPresent](#is-present)
 - [toArray](#to-array)
 - [reset](#reset)
+- [update](#update)
 - [extend](#extend)
 
 ### <a name="create"></a> create
@@ -277,21 +278,23 @@ It will raise exception for invalid keys in strict mode.
 
 ### <a name="reset"></a> reset
 
+Resets the attributes to the original value.
+
 ```js
 obj.attributes() // {name: 'Someone', ...}
-obj.set('name', 'Name') // 'Name'
-obj.attributes() // {name: 'Name', ...}
-// Reset returns the original attributes
+obj.set('name', 'Thor') // 'Thor'
+obj.attributes() // {name: 'Thor', ...}
+
 obj.reset() // {name: 'Someone', ...}
 obj.attributes() // {name: 'Someone', ...}
 ```
 
-with override:
+### <a name="update"></a> update
 
 ```js
-obj.reset({name: 'New', human: false}) // {name: 'New', human: false, ...}
+obj.update({name: 'New', human: false}) // {name: 'New', human: false, ...}
 obj.get('name') // 'New'
-obj.reset() // {...} original object
+obj.attributes() // {name: 'New', human: false, ...}
 ```
 
 ### <a name="extend"></a> extend
