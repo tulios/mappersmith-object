@@ -83,7 +83,7 @@ var obj = MappersmithObject.create(data, {strict: true});
 
 ### <a name="attributes"></a> attributes
 
-It returns a plain javascript object with your attributes.
+Returns a plain javascript object with your attributes.
 
 ```js
 obj.attributes() // {name: 'Someone', ...}
@@ -103,7 +103,7 @@ It will raise exception for invalid keys in strict mode.
 
 ### <a name="get"></a> get
 
-It retrieves the value of a property from the object. It accepts chain calls.
+Retrieves the value of a property from the object. It accepts chain calls.
 
 ```js
 obj.get('name') // 'Someone'
@@ -128,7 +128,7 @@ obj.get('invalid')
 
 ### <a name="set"></a> set
 
-It sets the provided value to the key, creating inexistent nodes in the process.
+Sets the provided value to the key, creating inexistent nodes in the process.
 
 ```js
 obj.set('name', 'Other') // 'Other'
@@ -165,7 +165,7 @@ obj.set('invalid', 'value')
 
 ### <a name="fetch"></a> fetch
 
-It fetches data from the object, using the given key. If there is data in the object with the given key, then that data is returned. If there is no such data in the object, then the second argument value will be set and returned.
+Fetches data from the object, using the given key. If there is data in the object with the given key, then that data is returned. If there is no such data in the object, then the second argument value will be set and returned.
 
 The second argument can be a value or a function. The function will be executed to generate the value.
 
@@ -201,7 +201,7 @@ obj.has('invalid') // false (no exception in this case)
 
 ### <a name="inc"></a> inc
 
-It set the value of a property to the current value plus some amount. The default amount is 1. If the value is not a number `false` will be returned instead. Undefined keys will be initialized with 1.
+Set the value of a property to the current value plus some amount. The default amount is 1. If the value is not a number `false` will be returned instead. Undefined keys will be initialized with 1.
 
 ```js
 obj.inc('clicks') // 4
@@ -214,7 +214,7 @@ It will raise exception for invalid keys in strict mode.
 
 ### <a name="dec"></a> dec
 
-It set the value of a property to the current value minus some amount. The default amount is 1. If the value is not a number `false` will be returned instead. Undefined keys will be initialized with -1.
+Set the value of a property to the current value minus some amount. The default amount is 1. If the value is not a number `false` will be returned instead. Undefined keys will be initialized with -1.
 
 ```js
 obj.dec('clicks') // 5
@@ -236,12 +236,35 @@ obj.toggle('name') // false
 ```
 
 ### <a name="is-blank"></a> isBlank
-// isBlank
+
+A value is blank if it's false, null, undefined, empty, NaN or a whitespace string. For example, '', ' ', null, undefined, [], and {} are all blank.
+
+```js
+obj.isBlank('invalid') // true
+
+// imagine {test1: '', test2: ' a ', test3: {}}
+obj.isBlank('invalid') // true
+obj.isBlank('test1') // true
+obj.isBlank('test2') // false
+obj.isBlank('test3') // true
+```
+
+It will return true for invalid keys in strict mode.
 
 ### <a name="is-present"></a> isPresent
-// isPresent
+
+A value is present if it's not blank.
+
+```js
+obj.isPresent('name') // true
+obj.isPresent('invalid') // false
+```
+
+It will return false for invalid keys in strict mode.
 
 ### <a name="to-array"></a> toArray
+
+Converts the value to an array. If the value is already an array, the same value will be returned. For undefined or null values a blank array ([]) will be returned.
 
 ```js
 obj.toArray('name') // ['Someone']
@@ -249,6 +272,8 @@ obj.toArray('age') // [27]
 obj.toArray('invalid') // []
 obj.toArray('company.sectors') // ["1A", "2B"]
 ```
+
+It will raise exception for invalid keys in strict mode.
 
 ### <a name="reset"></a> reset
 
