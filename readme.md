@@ -202,7 +202,7 @@ obj.has('invalid') // false (no exception in this case)
 
 ### <a name="inc"></a> inc
 
-Set the value of a property to the current value plus some amount. The default amount is 1. If the value is not a number `false` will be returned instead. Undefined keys will be initialized with 1.
+Set the value of a property to the current value plus some amount. The default amount is `1`. If the value is not a number `false` will be returned instead. Undefined keys will be initialized with `1`.
 
 ```js
 obj.inc('clicks') // 4
@@ -215,7 +215,7 @@ It will raise exception for invalid keys in strict mode.
 
 ### <a name="dec"></a> dec
 
-Set the value of a property to the current value minus some amount. The default amount is 1. If the value is not a number `false` will be returned instead. Undefined keys will be initialized with -1.
+Set the value of a property to the current value minus some amount. The default amount is `1`. If the value is not a number `false` will be returned instead. Undefined keys will be initialized with `-1`.
 
 ```js
 obj.dec('clicks') // 5
@@ -238,7 +238,7 @@ obj.toggle('name') // false
 
 ### <a name="is-blank"></a> isBlank
 
-A value is blank if it's false, null, undefined, empty, NaN or a whitespace string. For example, '', ' ', null, undefined, [], and {} are all blank.
+A value is blank if it's `false`, `null`, `undefined`, empty, `NaN` or a whitespace string. For example, `''`, `' '`, `null`, `undefined`, `[]`, and `{}` are all blank.
 
 ```js
 obj.isBlank('invalid') // true
@@ -265,7 +265,7 @@ It will return false for invalid keys in strict mode.
 
 ### <a name="to-array"></a> toArray
 
-Converts the value to an array. If the value is already an array, the same value will be returned. For undefined or null values a blank array ([]) will be returned.
+Converts the value to an array. If the value is already an array, the same value will be returned. For `undefined` or `null` values a blank array (`[]`) will be returned.
 
 ```js
 obj.toArray('name') // ['Someone']
