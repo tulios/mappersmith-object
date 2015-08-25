@@ -89,7 +89,7 @@ It returns a plain javascript object with your attributes.
 obj.attributes() // {name: 'Someone', ...}
 ```
 
-It accepts a list o keys to filter the result.
+It accepts a list of keys to filter the result.
 
 ```js
 obj.attributes('name') // {name: 'Someone'}
