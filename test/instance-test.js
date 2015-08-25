@@ -530,16 +530,18 @@ describe('Instance', function() {
       expect(instance.reset()).to.deep.equal(attributes);
       expect(instance.attributes()).to.deep.equal(attributes);
     });
+  });
 
-    it('overrides the attributes with the object argument', function() {
+  describe('#update', function() {
+    it('updates the attributes with the object argument', function() {
       var finalObject = Utils.extend({}, attributes, {name: 'New', age: 30});
-      expect(instance.reset({name: 'New', age: 30})).to.deep.equal(finalObject);
+      expect(instance.update({name: 'New', age: 30})).to.deep.equal(finalObject);
       expect(instance.attributes()).to.deep.equal(finalObject);
     });
 
-    describe('after override', function() {
+    describe('after update', function() {
       it('can reset to initial values', function() {
-        expect(instance.reset({name: 'Wrong'})).to.not.deep.equal(attributes);
+        expect(instance.update({name: 'Wrong'})).to.not.deep.equal(attributes);
         expect(instance.get('name')).to.equal('Wrong');
         expect(instance.reset()).to.deep.equal(attributes);
         expect(instance.attributes()).to.deep.equal(attributes);

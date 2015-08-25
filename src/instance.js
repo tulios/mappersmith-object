@@ -41,8 +41,12 @@ Instance.prototype = {
     return output.attributes();
   },
 
-  reset: function(override) {
-    return this._attributes = Utils.extend({}, this._original, override || {});
+  reset: function() {
+    return this._attributes = Utils.extend({}, this._original);
+  },
+
+  update: function(newAttributes) {
+    return this._attributes = Utils.extend(this._attributes, newAttributes);
   },
 
   get: function(stringChain, opts) {
