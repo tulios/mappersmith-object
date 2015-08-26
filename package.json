@@ -16,7 +16,6 @@
     "test": "SINGLE_RUN=true npm run test-browser"
   },
   "dependencies": {
-    "mappersmith": ">= 0.8.0",
     "browserify-shim": "^3.8.2"
   },
   "browserify": {

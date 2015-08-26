@@ -1,5 +1,4 @@
-var Mappersmith = require('mappersmith');
-var Utils = Mappersmith.Utils;
+var merge = require('./merge');
 var Exceptions = require('./exceptions');
 var isNumber = require('./number').isInteger;
 
@@ -22,7 +21,7 @@ function checkForStrictViolations(obj) {
 function Instance(obj, opts) {
   this._id = ++objectIDCount;
   this._original = obj;
-  this._opts = Utils.extend({strict: false}, opts);
+  this._opts = merge({strict: false}, opts);
   this._attributes = null;
   this.reset();
 }
@@ -42,15 +41,15 @@ Instance.prototype = {
   },
 
   reset: function() {
-    return this._attributes = Utils.extend({}, this._original);
+    return this._attributes = merge({}, this._original);
   },
 
   update: function(newAttributes) {
-    return this._attributes = Utils.extend(this._attributes, newAttributes);
+    return this._attributes = merge(this._attributes, newAttributes);
   },
 
   get: function(stringChain, opts) {
-    opts = Utils.extend({default: null}, opts);
+    opts = merge({default: null}, opts);
     var methods = stringChain.split(/\./);
     var obj = this._attributes;
     var holder = null;
@@ -170,7 +169,7 @@ Instance.prototype = {
 var signature = Object.keys(Instance.prototype);
 
 Instance.prototype.extend = function(mixin) {
-  mixin = Utils.extend({}, mixin);
+  mixin = merge({}, mixin);
   Object.keys(mixin).forEach(function(key) {
     if (['extend'].concat(signature).indexOf(key) !== -1) {
       throw new Error(
