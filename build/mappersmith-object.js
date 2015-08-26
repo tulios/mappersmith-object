@@ -27,9 +27,7 @@ module.exports = {
 }
 
 },{}],3:[function(require,module,exports){
-(function (global){
-var Mappersmith = (typeof window !== "undefined" ? window['Mappersmith'] : typeof global !== "undefined" ? global['Mappersmith'] : null);
-var Utils = Mappersmith.Utils;
+var merge = require('./merge');
 var Exceptions = require('./exceptions');
 var isNumber = require('./number').isInteger;
 
@@ -52,7 +50,7 @@ function checkForStrictViolations(obj) {
 function Instance(obj, opts) {
   this._id = ++objectIDCount;
   this._original = obj;
-  this._opts = Utils.extend({strict: false}, opts);
+  this._opts = merge({strict: false}, opts);
   this._attributes = null;
   this.reset();
 }
@@ -71,12 +69,16 @@ Instance.prototype = {
     return output.attributes();
   },
 
-  reset: function(override) {
-    return this._attributes = Utils.extend({}, this._original, override || {});
+  reset: function() {
+    return this._attributes = merge({}, this._original);
+  },
+
+  update: function(newAttributes) {
+    return this._attributes = merge(this._attributes, newAttributes);
   },
 
   get: function(stringChain, opts) {
-    opts = Utils.extend({default: null}, opts);
+    opts = merge({default: null}, opts);
     var methods = stringChain.split(/\./);
     var obj = this._attributes;
     var holder = null;
@@ -147,8 +149,9 @@ Instance.prototype = {
       return value === false ||
              !isDefined(value) ||
              (objToString === '[object Array]' && value.length === 0) ||
-             (objToString === '[object String]' && value.length === 0) ||
-             (objToString === '[object Number]' && isNaN(value));
+             (objToString === '[object String]' && (value.length === 0 || /^\s+$/g.test(value))) ||
+             (objToString === '[object Number]' && isNaN(value)) ||
+             (objToString === '[object Object]' && Object.keys(value).length === 0);
     } catch(e) {
       if (e instanceof Exceptions.StrictViolationException) return true;
       else throw e;
@@ -195,7 +198,7 @@ Instance.prototype = {
 var signature = Object.keys(Instance.prototype);
 
 Instance.prototype.extend = function(mixin) {
-  mixin = Utils.extend({}, mixin);
+  mixin = merge({}, mixin);
   Object.keys(mixin).forEach(function(key) {
     if (['extend'].concat(signature).indexOf(key) !== -1) {
       throw new Error(
@@ -212,8 +215,65 @@ Instance.prototype.extend = function(mixin) {
 
 module.exports = Instance;
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./exceptions":2,"./number":4}],4:[function(require,module,exports){
+},{"./exceptions":2,"./merge":4,"./number":5}],4:[function(require,module,exports){
+function isObject(value) {
+  return Object.prototype.toString.call(value) === '[object Object]';
+}
+
+function isArray(value) {
+  return Object.prototype.toString.call(value) === '[object Array]';
+}
+
+// Code based on: https://github.com/jquery/jquery/blob/2.1.4/src/core.js#L124
+function merge() {
+	var options, name, src, copy, copyIsArray, clone;
+	var target = arguments[0] || {};
+	var length = arguments.length;
+	var i = 1;
+
+	// Handle case when target is a string or something
+	if (typeof target !== 'object' && !(typeof target === 'function')) {
+		target = {};
+	}
+
+	for (; i < length; i++) {
+		// Only deal with non-null/undefined values
+    if ((options = arguments[i]) === null) continue;
+
+		// Extend the base object
+		for (name in options) {
+		  src = target[name];
+			copy = options[name];
+
+			// Prevent never-ending loop
+			if (target === copy) continue;
+
+			// Recurse if we're merging plain objects or arrays
+			if (copy && (isObject(copy) || (copyIsArray = isArray(copy)))) {
+				if (copyIsArray) {
+					copyIsArray = false;
+					clone = src && isArray(src) ? src : [];
+
+				} else {
+					clone = src && isObject(src) ? src : {};
+				}
+
+				// Never move original objects, clone them
+				target[name] = merge(clone, copy);
+
+		  // Don't bring in undefined values
+			} else if (copy !== undefined) {
+				target[name] = copy;
+			}
+		}
+	}
+
+	return target;
+}
+
+module.exports = merge;
+
+},{}],5:[function(require,module,exports){
 module.exports = {
   isInteger: Number.isInteger || function(value) {
     return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
