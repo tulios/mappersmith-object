@@ -15,15 +15,6 @@
     "test-browser": "./node_modules/.bin/karma start karma.conf.js",
     "test": "SINGLE_RUN=true npm run test-browser"
   },
-  "dependencies": {
-    "browserify-shim": "^3.8.2"
-  },
-  "browserify": {
-    "transform": [ "browserify-shim" ]
-  },
-  "browserify-shim": {
-    "mappersmith": "global:Mappersmith"
-  },
   "devDependencies": {
     "browserify": "^9.0.8",
     "browserify-versionify": "^1.0.4",

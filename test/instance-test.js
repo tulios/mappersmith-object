@@ -1,7 +1,5 @@
 var Promise = require('promise');
-var Mappersmith = require('mappersmith');
-var Utils = Mappersmith.Utils;
-
+var merge = require('../src/merge');
 var MappersmithObject = require('../index');
 var Instance = MappersmithObject.Instance;
 var Exceptions = MappersmithObject.Exceptions;
@@ -503,7 +501,7 @@ describe('Instance', function() {
     });
 
     it('returns the modified data', function() {
-      var newAttributes = Utils.extend({}, attributes, {name: 'New Name'});
+      var newAttributes = merge({}, attributes, {name: 'New Name'});
       instance.set('name', 'New Name');
       expect(instance.attributes()).to.deep.equal(newAttributes);
     });
@@ -534,7 +532,7 @@ describe('Instance', function() {
 
   describe('#update', function() {
     it('updates the attributes with the object argument', function() {
-      var finalObject = Utils.extend({}, attributes, {name: 'New', age: 30});
+      var finalObject = merge({}, attributes, {name: 'New', age: 30});
       expect(instance.update({name: 'New', age: 30})).to.deep.equal(finalObject);
       expect(instance.attributes()).to.deep.equal(finalObject);
     });
