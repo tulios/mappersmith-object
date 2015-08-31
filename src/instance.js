@@ -62,7 +62,7 @@ Instance.prototype = {
 
     // need to check holder with isDefined because '' (empty string)
     // is treated as a false object. Ex: '' || null => null
-    return isDefined(holder) ? holder : opts.default || null;
+    return isDefined(holder) ? holder : opts.default;
   },
 
   set: function(stringChain, value) {
