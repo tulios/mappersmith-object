@@ -5,7 +5,7 @@ __This is a work in progress__
 
 This project is inspired by the `Ember.Object` project, it aims to provide a light layer on top of your objects/responses to help with common annoyances which the javascript world provides daily. It helps you with a common interface to access attributes and really useful helpers to deal with daily problems.
 
-This project carries the name `mappersmith-` because it was planned to deeply integrate with [Mappersmith](https://github.com/tulios/mappersmith) project, but this is not longer true, this project doesn't require Mappersmith anymore and can be used standalone.
+This project carries the name `mappersmith-` because it was planned to deeply integrate with [Mappersmith](https://github.com/tulios/mappersmith) project, but this is no longer true, this project doesn't require Mappersmith anymore and can be used standalone.
 
 ## Browser support
 
