@@ -1,3 +1,4 @@
+[![npm version](https://badge.fury.io/js/mappersmith-object.svg)](http://badge.fury.io/js/mappersmith-object)
 [![Build Status](https://travis-ci.org/tulios/mappersmith-object.svg?branch=master)](https://travis-ci.org/tulios/mappersmith-object)
 # Mappersmith Object
 
