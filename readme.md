@@ -1,8 +1,6 @@
 [![Build Status](https://travis-ci.org/tulios/mappersmith-object.svg?branch=master)](https://travis-ci.org/tulios/mappersmith-object)
 # Mappersmith Object
 
-__This is a work in progress__
-
 This project is inspired by the `Ember.Object` project, it aims to provide a light layer on top of your objects/responses to help with common annoyances which the javascript world provides daily. It helps you with a common interface to access attributes and really useful helpers to deal with daily problems.
 
 This project carries the name `mappersmith-` because it was planned to deeply integrate with [Mappersmith](https://github.com/tulios/mappersmith) project, but this is no longer true, this project doesn't require Mappersmith anymore and can be used standalone.
@@ -303,6 +301,8 @@ obj.attributes() // {name: 'New', human: false, ...}
 
 ### <a name="extend"></a> extend
 
+Merges the content into the object. This method provides a way to enhance the object with mixins/modules. `extend` can be called several times, the methods can be overridden within the next calls.
+
 ```js
 obj.extend({
   greetings: function() {
@@ -315,6 +315,27 @@ obj.extend({
 
 obj.greetings() // 'Hello Someone'
 obj.sectorCountPlus(3) // 2 + 3 = 5
+```
+
+It's possible to call `extend` several times.
+
+```js
+var LogMixin = {
+  info: function() {
+    console.log.apply(this, arguments);
+  }
+}
+
+var ToJsonMixin = {
+  toJsonString: function() {
+    return JSON.stringify(this.attributes());
+  }
+}
+
+obj.extend(LogMixin).extend(ToJsonMixin);
+
+obj.info('message');
+obj.toJsonString();
 ```
 
 ## Tests
