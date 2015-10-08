@@ -16,13 +16,13 @@
     "test": "SINGLE_RUN=true npm run test-browser"
   },
   "devDependencies": {
-    "browserify": "^9.0.8",
-    "browserify-versionify": "^1.0.4",
-    "mocha": "^2.0.1",
-    "chai": "^1.10.0",
-    "sinon": "^1.12.2",
-    "sinon-chai": "^2.6.0",
-    "karma": "^0.13.2",
+    "browserify": "^11.2.0",
+    "browserify-versionify": "^1.0.6",
+    "mocha": "^2.3.3",
+    "chai": "^3.3.0",
+    "sinon": "^1.17.1",
+    "sinon-chai": "^2.8.0",
+    "karma": "^0.13.10",
     "karma-mocha": "^0.2.0",
     "karma-browserify": "^4.2.1",
     "karma-chai": "^0.1.0",
@@ -30,11 +30,11 @@
     "karma-firefox-launcher": "^0.1.6",
     "karma-phantomjs2-launcher": "^0.1.6",
     "karma-sinon": "^1.0.4",
-    "karma-sinon-chai": "^0.3.2",
+    "karma-sinon-chai": "^1.1.0",
     "phantomjs": "^1.9.17",
-    "rewire": "^2.3.0",
-    "rewireify": "0.0.13",
-    "promise": "^7.0.3",
-    "uglify-js": "^2.4.20"
+    "rewire": "^2.3.4",
+    "rewireify": "0.2.4",
+    "promise": "^7.0.4",
+    "uglify-js": "^2.4.24"
   }
 }
