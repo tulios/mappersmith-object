@@ -105,12 +105,16 @@ It will raise exception for invalid keys in strict mode.
 
 ### <a name="get"></a> get
 
-Retrieves the value of a property from the object. It accepts chain calls.
+Retrieves the value of a property from the object. It accepts chain calls. It works with array indexes.
 
 ```js
 obj.get('name') // 'Someone'
 obj.get('company.name') // SomethingCool.io
+obj.get('company.name.0') // S
 obj.get('company.floors.first') // A
+obj.get('company.sectors.0') // 1A
+obj.get('company.sectors.1') // 2B
+obj.get('company.sectors.99') // null
 obj.get('wrong') // null
 obj.get('wrong.chain') // null
 ```

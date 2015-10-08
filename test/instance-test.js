@@ -77,6 +77,35 @@ describe('Instance', function() {
         expect(isNaN(instance.get('test-key'))).to.equal(true);
       });
     });
+
+    describe('for arrays', function() {
+      it('can return values based on indexes', function() {
+        var array = attributes.company.sectors;
+        expect(instance.get('company.sectors.0')).to.equal(array[0]);
+        expect(instance.get('company.sectors.1')).to.equal(array[1]);
+      });
+
+      it('returns nulll for invalid indexes', function() {
+        expect(instance.get('company.sectors.-1')).to.equal(null);
+        expect(instance.get('company.sectors.2')).to.equal(null);
+      });
+
+      it('works with arrays of arrays', function() {
+        attributes = {fruits: [['orange', 'lemon'], ['avocado', 'mango']]}
+        instance = new Instance(attributes);
+        expect(instance.get('fruits.0.0')).to.equal(attributes.fruits[0][0]);
+        expect(instance.get('fruits.0.1')).to.equal(attributes.fruits[0][1]);
+        expect(instance.get('fruits.1.0')).to.equal(attributes.fruits[1][0]);
+        expect(instance.get('fruits.1.1')).to.equal(attributes.fruits[1][1]);
+        expect(instance.get('fruits.1.2')).to.equal(null);
+      });
+
+      it('returns null for non arrays or strings', function() {
+        expect(instance.get('company.0')).to.equal(null);
+        expect(instance.get('age.0')).to.equal(null);
+        expect(instance.get('human.0')).to.equal(null);
+      });
+    });
   });
 
   describe('#set', function() {
