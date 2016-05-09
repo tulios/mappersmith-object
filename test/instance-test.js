@@ -521,6 +521,12 @@ describe('Instance', function() {
     it('returns an empty array for undefined values', function() {
       expect(instance.toArray('invalid')).to.deep.equal([]);
     });
+
+    describe('without arguments', function() {
+      it('returns the object attributes wrapped', function() {
+        expect(instance.toArray()).to.deep.equal([instance.attributes()]);
+      });
+    });
   });
 
   describe('#attributes', function() {
@@ -789,6 +795,12 @@ describe('Instance', function() {
           expect(e instanceof Exceptions.StrictViolationException).to.equal(true);
           done();
         }
+      });
+
+      describe('without arguments', function() {
+        it('returns the object attributes wrapped', function() {
+          expect(instance.toArray()).to.deep.equal([instance.attributes()]);
+        });
       });
     });
 

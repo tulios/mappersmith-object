@@ -279,6 +279,12 @@ obj.toArray('invalid') // []
 obj.toArray('company.sectors') // ["1A", "2B"]
 ```
 
+If called without arguments it will return the object attributes wrapped.
+
+```js
+obj.toArray() // [{name: "Someone", ...}]
+```
+
 It will raise exception for invalid keys in strict mode.
 
 ### <a name="reset"></a> reset

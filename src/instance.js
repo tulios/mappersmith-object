@@ -155,7 +155,7 @@ Instance.prototype = {
   },
 
   toArray: function(stringChain) {
-    var value = this.get(stringChain);
+    var value = stringChain ? this.get(stringChain) : this.attributes();
     if (!isDefined(value)) return [];
     var objToString = Object.prototype.toString.call(value);
     return objToString === '[object Array]' ? value : [value];
