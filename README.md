@@ -62,7 +62,7 @@ __Table of Contents:__
 - [get](#get)
 - [set](#set)
 - [fetch](#fetch)
-- [has](#has)
+- [has/is](#has)
 - [inc](#inc)
 - [dec](#dec)
 - [toggle](#toggle)
@@ -203,6 +203,13 @@ with `{strict: true}`:
 
 ```js
 obj.has('invalid') // false (no exception in this case)
+```
+
+Also aliased as: `is`
+
+```js
+obj.is('human') // true
+obj.is('enabled') // false
 ```
 
 ### <a name="inc"></a> inc

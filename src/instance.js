@@ -184,4 +184,7 @@ Instance.prototype.extend = function(mixin) {
   return this;
 }
 
+// Alias
+Instance.prototype.is = Instance.prototype.has;
+
 module.exports = Instance;

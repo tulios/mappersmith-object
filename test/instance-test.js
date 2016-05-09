@@ -246,6 +246,13 @@ describe('Instance', function() {
     });
   });
 
+  describe('#is', function() {
+    it('is just an alias for "has"', function() {
+      expect(instance.is('human')).to.equal(true);
+      expect(instance.is).to.equal(instance.has);
+    });
+  });
+
   describe('#isBlank', function() {
     var keyName;
 
