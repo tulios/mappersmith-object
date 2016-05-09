@@ -15,6 +15,11 @@
     "test-browser": "./node_modules/.bin/karma start karma.conf.js",
     "test": "SINGLE_RUN=true npm run test-browser"
   },
+  "bugs": {
+    "url": "https://github.com/tulios/mappersmith-object/issues"
+  },
+  "homepage": "https://github.com/tulios/mappersmith-object",
+  "tonicExampleFilename": "example.js",
   "devDependencies": {
     "browserify": "^11.2.0",
     "browserify-versionify": "^1.0.6",
