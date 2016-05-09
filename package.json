@@ -1,6 +1,6 @@
 {
   "name": "mappersmith-object",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "It aims to provide a light layer on top of your objects/responses to help with common annoyances which the javascript world provides daily",
   "main": "index.js",
   "author": "Túlio Ornelas <ornelas.tulio@gmail.com>",
