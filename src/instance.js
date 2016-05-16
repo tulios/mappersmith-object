@@ -55,6 +55,7 @@ Instance.prototype = {
     var holder = null;
 
     methods.forEach(function(method) {
+      method = method === "-1" ? (obj.length - 1) : method;
       holder = isDefined(obj) ? obj[method] : null;
       checkForStrictViolations.call(this, holder);
       obj = holder;

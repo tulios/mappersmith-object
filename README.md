@@ -41,7 +41,7 @@ var data = {
   clicks: 3,
   company: {
     name: "SomethingCool.io",
-    sectors: ["1A", "2B"],
+    sectors: ["1A", "2B", "9Z"],
     floors: {
       first: "A",
       second: "B"
@@ -114,6 +114,7 @@ obj.get('company.name.0') // S
 obj.get('company.floors.first') // A
 obj.get('company.sectors.0') // 1A
 obj.get('company.sectors.1') // 2B
+obj.get('company.sectors.-1') // 9Z - the last item
 obj.get('company.sectors.99') // null
 obj.get('wrong') // null
 obj.get('wrong.chain') // null
