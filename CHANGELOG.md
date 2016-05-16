@@ -1,5 +1,9 @@
 # Changelog
 
+# 0.3.0
+
+- Included array last item through `-1` index
+
 # 0.2.0
 
 - Included alias `is` for the `has` method
