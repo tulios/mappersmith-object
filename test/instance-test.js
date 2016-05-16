@@ -15,7 +15,7 @@ describe('Instance', function() {
       clicks: 3,
       company: {
         name: "SomethingCool.io",
-        sectors: ["1A", "2B"],
+        sectors: ["1A", "2B", "9Z"],
         floors: {
           first: "A",
           second: "B"
@@ -85,9 +85,14 @@ describe('Instance', function() {
         expect(instance.get('company.sectors.1')).to.equal(array[1]);
       });
 
+      it('can return the last value based on indexes', function() {
+        var array = attributes.company.sectors;
+        expect(instance.get('company.sectors.-1')).to.equal(array[array.length - 1]);
+      });
+
       it('returns nulll for invalid indexes', function() {
-        expect(instance.get('company.sectors.-1')).to.equal(null);
-        expect(instance.get('company.sectors.2')).to.equal(null);
+        expect(instance.get('company.sectors.-2')).to.equal(null);
+        expect(instance.get('company.sectors.9')).to.equal(null);
       });
 
       it('works with arrays of arrays', function() {
