@@ -62,6 +62,7 @@ __Table of Contents:__
 - [get](#get)
 - [set](#set)
 - [fetch](#fetch)
+- [alias](#alias)
 - [has/is](#has)
 - [inc](#inc)
 - [dec](#dec)
@@ -187,6 +188,39 @@ It will raise exception for invalid keys in strict mode.
 ```js
 obj.fetch('invalid', 'value')
 // throws MappersmithObject.Exceptions.StrictViolationException
+```
+
+### <a name="alias"></a> alias
+
+Create alias accessors to your attributes. Returns `this` so it can be chained with other methods.
+
+```js
+obj.alias({fullName: 'name'}) // argument: object with {aliasName: 'attributeToBeAliased'}
+obj.get('fullName') // 'Someone'
+obj.set('fullName', 'New Name')
+// obj.get('fullName') => 'New Name'
+// obj.get('name') => 'New Name'
+```
+
+It also works with chains:
+
+```js
+obj.alias({floors: 'company.floors'})
+obj.get('floors') // {first: "A", second: "B"}
+```
+
+When called without arguments returns the alias mapping:
+
+```js
+obj.alias() // {fullName: 'name'}
+```
+
+Aliased values can only be returned by `attributes` when explicit requested, example:
+
+```js
+obj.alias({fullName: 'name'})
+obj.attributes() // Object without alias: {name: 'Someone', ...}
+obj.attributes('fullName', 'age') // {fullName: 'Someone', age: 27}
 ```
 
 ### <a name="has"></a> has
