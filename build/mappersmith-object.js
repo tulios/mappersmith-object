@@ -1,6 +1,6 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.MappersmithObject = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*!
- * MappersmithObject 0.2.0
+ * MappersmithObject 0.4.0
  * https://github.com/tulios/mappersmith-object
  */
 var Instance = require('./src/instance');
@@ -47,18 +47,25 @@ function checkForStrictViolations(obj) {
   }
 }
 
+function warn(message) {
+  if (console && console.warn) {
+    console.warn('[MappersmithObject] ' + message);
+  }
+}
+
 function Instance(obj, opts) {
   this._id = ++objectIDCount;
   this._original = obj;
   this._opts = merge({strict: false}, opts);
   this._attributes = null;
+  this._aliases = {};
   this.reset();
 }
 
 Instance.prototype = {
   attributes: function() {
     var argumentsLength = arguments.length;
-    if (argumentsLength === 0) return this._attributes;
+    if (argumentsLength === 0) return merge({}, this._attributes);
     var output = new Instance();
 
     for (var i = 0; i < argumentsLength; i++) {
@@ -77,13 +84,36 @@ Instance.prototype = {
     return this._attributes = merge(this._attributes, newAttributes);
   },
 
+  alias: function(aliases) {
+    var argumentsLength = arguments.length;
+    if (argumentsLength === 0) return merge({}, this._aliases);
+
+    var filteredAliases = {};
+    Object.keys(aliases || {}).forEach(function(name) {
+      if (!this.has(name, {skipAlias: true})) {
+        filteredAliases[name] = aliases[name];
+      } else {
+        warn('Skipping alias "' + name + '". It is shadowing/hiding an attribute with the same name');
+      }
+    }.bind(this));
+
+    this._aliases = merge(this._aliases, filteredAliases);
+    return this;
+  },
+
   get: function(stringChain, opts) {
-    opts = merge({default: null}, opts);
+    opts = merge({default: null, skipAlias: false}, opts);
     var methods = stringChain.split(/\./);
     var obj = this._attributes;
     var holder = null;
 
+    if (!opts.skipAlias) {
+      var alias = this._aliases[stringChain]
+      if (alias) return this.get(alias);
+    }
+
     methods.forEach(function(method) {
+      method = method === '-1' ? (obj.length - 1) : method;
       holder = isDefined(obj) ? obj[method] : null;
       checkForStrictViolations.call(this, holder);
       obj = holder;
@@ -104,6 +134,9 @@ Instance.prototype = {
     var methods = stringChain.split(/\./);
     var obj = this._attributes;
     var last = methods.length - 1;
+
+    var alias = this._aliases[stringChain]
+    if (alias) return this.set(alias, value);
 
     methods.forEach(function(method, i) {
       if (i !== last) {
@@ -132,9 +165,10 @@ Instance.prototype = {
     return result;
   },
 
-  has: function(stringChain) {
+  has: function(stringChain, opts) {
     try {
-      return isDefined(this.get(stringChain));
+      opts = merge({skipAlias: false}, opts);
+      return isDefined(this.get(stringChain, opts));
 
     } catch(e) {
       if (e instanceof Exceptions.StrictViolationException) return false;
@@ -196,6 +230,7 @@ Instance.prototype = {
 }
 
 var signature = Object.keys(Instance.prototype);
+signature.splice(signature.indexOf('toString'), 1);
 
 Instance.prototype.extend = function(mixin) {
   mixin = merge({}, mixin);
