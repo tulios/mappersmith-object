@@ -684,7 +684,7 @@ describe('Instance', function() {
 
   describe('#alias', function() {
     it('returns the instance', function() {
-      expect(instance.alias()).to.equal(instance);
+      expect(instance.alias({fullName: 'name'})).to.equal(instance);
     });
 
     it('creates new aliases', function() {
@@ -718,6 +718,23 @@ describe('Instance', function() {
       instance.alias({age: 'age'});
       expect(console.warn.calledOnce).to.equal(true);
       console.warn.restore();
+    });
+
+    describe('without parameters', function() {
+      it('returns the alias mapping', function() {
+        instance.alias({fullName: 'name'}).alias({numberOfClicksSinceYesterday: 'clicks'});
+        expect(instance.alias()).to.deep.equal({fullName: 'name', numberOfClicksSinceYesterday: 'clicks'});
+      });
+
+      it('returns a new copy of aliases to avoid side effects', function() {
+        var aliases = instance
+          .alias({fullName: 'name'})
+          .alias({numberOfClicksSinceYesterday: 'clicks'})
+          .alias();
+
+        aliases.fullName = 'age';
+        expect(aliases).to.not.deep.equal(instance.alias());
+      });
     });
   });
 

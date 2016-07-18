@@ -56,6 +56,9 @@ Instance.prototype = {
   },
 
   alias: function(aliases) {
+    var argumentsLength = arguments.length;
+    if (argumentsLength === 0) return merge({}, this._aliases);
+
     var filteredAliases = {};
     Object.keys(aliases || {}).forEach(function(name) {
       if (!this.has(name, {skipAlias: true})) {
