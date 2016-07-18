@@ -198,6 +198,7 @@ Instance.prototype = {
 }
 
 var signature = Object.keys(Instance.prototype);
+signature.splice(signature.indexOf('toString'), 1);
 
 Instance.prototype.extend = function(mixin) {
   mixin = merge({}, mixin);

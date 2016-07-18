@@ -641,12 +641,20 @@ describe('Instance', function() {
     });
 
     [
+      'attributes',
+      'reset',
+      'update',
+      'alias',
       'get',
       'set',
       'fetch',
-      'attributes',
-      'reset',
-      'extend'
+      'has',
+      'isBlank',
+      'isPresent',
+      'inc',
+      'dec',
+      'toggle',
+      'toArray'
     ].forEach(function(method) {
       it('protects reserved methods (' + method + ')', function(done) {
         var mixin = {};
@@ -655,6 +663,13 @@ describe('Instance', function() {
         try { instance.extend(mixin); done(new Error('it shouldn\'t allow to override ' + method)); }
         catch(e) { expect(e).to.not.be.nil; done(); }
       });
+    });
+
+    it('allows "toString" to be replaced', function() {
+      instance.extend({
+        toString: function() { return 'MyObject' }
+      });
+      expect(instance.toString()).to.equal('MyObject');
     });
 
     it('allows multiple calls to extend', function() {
