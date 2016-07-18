@@ -36,7 +36,7 @@ function Instance(obj, opts) {
 Instance.prototype = {
   attributes: function() {
     var argumentsLength = arguments.length;
-    if (argumentsLength === 0) return this._attributes;
+    if (argumentsLength === 0) return merge({}, this._attributes);
     var output = new Instance();
 
     for (var i = 0; i < argumentsLength; i++) {

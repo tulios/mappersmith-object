@@ -565,6 +565,12 @@ describe('Instance', function() {
       expect(instance.attributes()).to.deep.equal(newAttributes);
     });
 
+    it('returns a new copy of attributes to avoid side effects', function() {
+      var attrs = instance.attributes();
+      attrs.name = 'another name';
+      expect(attrs).to.not.deep.equal(instance.attributes());
+    });
+
     describe('with arguments', function() {
       it('filters the returned object', function() {
         var result = {name: 'Someone', human: true};
