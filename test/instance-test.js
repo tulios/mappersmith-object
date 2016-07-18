@@ -12,6 +12,7 @@ describe('Instance', function() {
       name: "Someone",
       age: 27,
       human: true,
+      enabled: false,
       clicks: 3,
       company: {
         name: "SomethingCool.io",
@@ -110,6 +111,13 @@ describe('Instance', function() {
         expect(instance.get('age.0')).to.equal(null);
         expect(instance.get('human.0')).to.equal(null);
       });
+    });
+
+    describe('with "skipAlias: true"', function() {
+      it('skips alias', function() {
+        expect(instance.alias({fullName: 'name'}).get('name')).to.equal(attributes.name);
+        expect(instance.get('fullName', {skipAlias: true})).to.equal(null);
+      })
     });
   });
 
@@ -213,6 +221,10 @@ describe('Instance', function() {
 
     it('works with chains', function() {
       expect(instance.has('company.floors.first')).to.equal(true);
+    });
+
+    it('returns true for valid keys with falsy value', function() {
+      expect(instance.has('enabled')).to.equal(true);
     });
 
     it('returns false for invalid keys', function() {
@@ -652,6 +664,45 @@ describe('Instance', function() {
 
       expect(typeof instance.anotherMethod).to.equal('function');
       expect(instance.anotherMethod()).to.equal('static');
+    });
+  });
+
+  describe('#alias', function() {
+    it('returns the instance', function() {
+      expect(instance.alias()).to.equal(instance);
+    });
+
+    it('creates new aliases', function() {
+      instance.alias({fullName: 'name', numberOfClicksSinceYesterday: 'clicks'});
+      expect(instance.get('fullName')).to.equal(instance.get('name'));
+      expect(instance.get('numberOfClicksSinceYesterday')).to.equal(instance.get('clicks'));
+    });
+
+    it('updates previous aliases', function() {
+      instance.alias({fullName: 'name'});
+      expect(instance.get('fullName')).to.equal(instance.get('name'));
+
+      instance.alias({fullName: 'age'});
+      expect(instance.get('fullName')).to.equal(instance.get('age'));
+    });
+
+    it('allows chains', function() {
+      instance.alias({floors: 'company.floors'});
+      expect(instance.get('floors')).to.equal(instance.get('company.floors'));
+    });
+
+    it('works with set', function() {
+      var newName = 'new name';
+      instance.alias({fullName: 'name'});
+      expect(instance.set('fullName', newName)).to.equal(newName);
+      expect(instance.get('name')).to.equal(newName);
+    });
+
+    it('prevents name collisions with attributes', function() {
+      sinon.stub(console, 'warn').returns(function(){});
+      instance.alias({age: 'age'});
+      expect(console.warn.calledOnce).to.equal(true);
+      console.warn.restore();
     });
   });
 

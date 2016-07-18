@@ -18,11 +18,18 @@ function checkForStrictViolations(obj) {
   }
 }
 
+function warn(message) {
+  if (console && console.warn) {
+    console.warn('[MappersmithObject] ' + message);
+  }
+}
+
 function Instance(obj, opts) {
   this._id = ++objectIDCount;
   this._original = obj;
   this._opts = merge({strict: false}, opts);
   this._attributes = null;
+  this._aliases = {};
   this.reset();
 }
 
@@ -48,14 +55,33 @@ Instance.prototype = {
     return this._attributes = merge(this._attributes, newAttributes);
   },
 
+  alias: function(aliases) {
+    var filteredAliases = {};
+    Object.keys(aliases || {}).forEach(function(name) {
+      if (!this.has(name, {skipAlias: true})) {
+        filteredAliases[name] = aliases[name];
+      } else {
+        warn('Skipping alias "' + name + '". It is shadowing/hiding an attribute with the same name');
+      }
+    }.bind(this));
+
+    this._aliases = merge(this._aliases, filteredAliases);
+    return this;
+  },
+
   get: function(stringChain, opts) {
-    opts = merge({default: null}, opts);
+    opts = merge({default: null, skipAlias: false}, opts);
     var methods = stringChain.split(/\./);
     var obj = this._attributes;
     var holder = null;
 
+    if (!opts.skipAlias) {
+      var alias = this._aliases[stringChain]
+      if (alias) return this.get(alias);
+    }
+
     methods.forEach(function(method) {
-      method = method === "-1" ? (obj.length - 1) : method;
+      method = method === '-1' ? (obj.length - 1) : method;
       holder = isDefined(obj) ? obj[method] : null;
       checkForStrictViolations.call(this, holder);
       obj = holder;
@@ -76,6 +102,9 @@ Instance.prototype = {
     var methods = stringChain.split(/\./);
     var obj = this._attributes;
     var last = methods.length - 1;
+
+    var alias = this._aliases[stringChain]
+    if (alias) return this.set(alias, value);
 
     methods.forEach(function(method, i) {
       if (i !== last) {
@@ -104,9 +133,10 @@ Instance.prototype = {
     return result;
   },
 
-  has: function(stringChain) {
+  has: function(stringChain, opts) {
     try {
-      return isDefined(this.get(stringChain));
+      opts = merge({skipAlias: false}, opts);
+      return isDefined(this.get(stringChain, opts));
 
     } catch(e) {
       if (e instanceof Exceptions.StrictViolationException) return false;
