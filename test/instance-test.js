@@ -581,6 +581,13 @@ describe('Instance', function() {
         var result = {new: {value: null}, company: {floors: {first: "A", second: "B"}}};
         expect(instance.attributes('new.value', 'company.floors')).to.deep.equal(result);
       });
+
+      describe('defining an alias', function() {
+        it('returns the attribute with the alias name', function() {
+          instance.alias({fullName: 'name'});
+          expect(instance.attributes('fullName')).to.deep.equal({fullName: 'Someone'});
+        });
+      });
     });
   });
 
