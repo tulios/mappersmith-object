@@ -5,10 +5,11 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['browserify', 'mocha', 'chai', 'sinon', 'sinon-chai'],
+    frameworks: ['mocha', 'chai', 'sinon', 'sinon-chai'],
 
     plugins: [
-      'karma-browserify',
+      'karma-webpack',
+      'karma-sourcemap-loader',
       'karma-firefox-launcher',
       'karma-phantomjs2-launcher',
       'karma-mocha',
@@ -19,24 +20,23 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'index.js',
       'test/*.js'
     ],
-
-    browserify: {
-      debug: true,
-      transform: ['rewireify']
-    },
 
     // list of files to exclude
     exclude: [
     ],
 
+    webpack: {
+  		resolve: {
+  			extensions: ['', '.js']
+  		}
+    },
+
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'index.js': [ 'browserify' ],
-      'test/*.js': [ 'browserify' ]
+      'test/*.js': [ 'webpack', 'sourcemap' ]
     },
 
     // test results reporter to use

@@ -10,8 +10,8 @@
     "url": "https://github.com/tulios/mappersmith-object.git"
   },
   "scripts": {
-    "build": "./node_modules/.bin/browserify index.js -x mappersmith -s MappersmithObject -t browserify-versionify --no-builtins --no-bf -o build/mappersmith-object.js",
-    "release": "npm run build && ./node_modules/.bin/uglifyjs build/mappersmith-object.js -o build/mappersmith-object.min.js -c --screw-ie8 --comments /^\\s*/*!/",
+    "build": "./node_modules/.bin/webpack",
+    "release": "NODE_ENV=production npm run build",
     "test-browser": "./node_modules/.bin/karma start karma.conf.js",
     "test": "SINGLE_RUN=true npm run test-browser"
   },
@@ -21,25 +21,22 @@
   "homepage": "https://github.com/tulios/mappersmith-object",
   "tonicExampleFilename": "example.js",
   "devDependencies": {
-    "browserify": "^11.2.0",
-    "browserify-versionify": "^1.0.6",
-    "mocha": "^2.3.3",
     "chai": "^3.3.0",
-    "sinon": "^1.17.1",
-    "sinon-chai": "^2.8.0",
     "karma": "^0.13.10",
-    "karma-mocha": "^0.2.0",
-    "karma-browserify": "^4.2.1",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.0",
     "karma-firefox-launcher": "^0.1.6",
+    "karma-mocha": "^0.2.0",
     "karma-phantomjs2-launcher": "^0.1.6",
     "karma-sinon": "^1.0.4",
     "karma-sinon-chai": "^1.1.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^1.7.0",
+    "mocha": "^2.3.3",
     "phantomjs": "^1.9.17",
-    "rewire": "^2.3.4",
-    "rewireify": "0.2.4",
     "promise": "^7.0.4",
-    "uglify-js": "^2.4.24"
+    "sinon": "^1.17.1",
+    "sinon-chai": "^2.8.0",
+    "webpack": "^1.13.1"
   }
 }

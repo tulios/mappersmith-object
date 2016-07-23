@@ -1,8 +1,7 @@
 var Promise = require('promise');
 var merge = require('../src/merge');
-var MappersmithObject = require('../index');
-var Instance = MappersmithObject.Instance;
-var Exceptions = MappersmithObject.Exceptions;
+var Instance = require('../src/instance');
+var Exceptions = require('../src/exceptions');
 
 describe('Instance', function() {
   var instance, attributes;
