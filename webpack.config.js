@@ -19,7 +19,7 @@ module.exports = {
   output: {
     path: './build',
     filename: 'mappersmith-object.js',
-    library: "MappersmihtObject",
+    library: "MappersmithObject",
     libraryTarget: "umd"
   },
   plugins: plugins
