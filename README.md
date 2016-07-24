@@ -93,7 +93,7 @@ var obj = MappersmithObject.create(data, {strict: true});
 
 ### <a name="class-extend"></a> extend
 
-This method is a constructor _function_ for "models". It takes a model definition returns a constructor function based on `create`.
+This method is a constructor _function_ for "models". It takes a model definition and returns a constructor function based on `create`.
 
 ```js
 var Person = MappersmithObject.extend({
@@ -102,9 +102,9 @@ var Person = MappersmithObject.extend({
   }
 });
 
-var littlePerson = new Person(data);
-littlePerson.get('name') // Someone
-littlePerson.profile() // Someone, age: 27
+var obj = new Person(data);
+obj.get('name') // Someone
+obj.profile() // Someone, age: 27
 ```
 
 ## Object methods
