@@ -151,12 +151,14 @@ Instance.prototype = {
     try {
       var value = this.get(stringChain);
       var objToString = Object.prototype.toString.call(value);
-      return value === false ||
-             !isDefined(value) ||
-             (objToString === '[object Array]' && value.length === 0) ||
-             (objToString === '[object String]' && (value.length === 0 || /^\s+$/g.test(value))) ||
-             (objToString === '[object Number]' && isNaN(value)) ||
-             (objToString === '[object Object]' && Object.keys(value).length === 0);
+      return (
+        value === false ||
+        !isDefined(value) ||
+        (objToString === '[object Array]' && value.length === 0) ||
+        (objToString === '[object String]' && (value.length === 0 || /^\s+$/g.test(value))) ||
+        (objToString === '[object Number]' && isNaN(value)) ||
+        (objToString === '[object Object]' && Object.keys(value).length === 0)
+      );
     } catch(e) {
       if (e instanceof Exceptions.StrictViolationException) return true;
       else throw e;
