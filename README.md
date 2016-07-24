@@ -8,7 +8,7 @@ This project carries the name `mappersmith-` because it was planned to deeply in
 
 ## Browser support
 
-This project was designed considering modern browsers. However, all the methods used can be included by polyfills.
+This project was designed considering modern browsers. However, all the methods used are from ES5 and can be included by polyfills.
 
 ## Install
 
@@ -57,7 +57,12 @@ var MappersmithObject = require('mappersmith-object');
 ```
 
 __Table of Contents:__
-- [create](#create)
+
+__Constructors:__
+- [create](#class-create)
+- [extend](#class-extend)
+
+__Object methods:__
 - [attributes](#attributes)
 - [get](#get)
 - [set](#set)
@@ -74,7 +79,9 @@ __Table of Contents:__
 - [update](#update)
 - [extend](#extend)
 
-### <a name="create"></a> create
+## Constructors
+
+### <a name="class-create"></a> create
 
 This method is used to wrap your objects. With `strict: true` operations with undefined attributes will raise an exception.
 
@@ -83,6 +90,24 @@ var obj = MappersmithObject.create(data);
 // or
 var obj = MappersmithObject.create(data, {strict: true});
 ```
+
+### <a name="class-extend"></a> extend
+
+This method is a constructor _function_ for "models". It takes a model definition returns a constructor function based on `create`.
+
+```js
+var Person = MappersmithObject.extend({
+  profile: function() {
+    return this.get('name') + ', age: ' + this.get('age');
+  }
+});
+
+var littlePerson = new Person(data);
+littlePerson.get('name') // Someone
+littlePerson.profile() // Someone, age: 27
+```
+
+## Object methods
 
 ### <a name="attributes"></a> attributes
 
